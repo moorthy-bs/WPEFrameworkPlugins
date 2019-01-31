@@ -28,6 +28,7 @@ option(PLUGIN_WEBSHELL "Include WebShell plugin" OFF)
 option(PLUGIN_TVCONTROL "Include TVControl plugin" OFF)
 option(PLUGIN_WIFICONTROL "Include WifiControl plugin" OFF)
 option(PLUGIN_TESTUTILITY "Include TestUtility plugin" OFF)
+option(PLUGIN_PROXYSTUBSVALIDATOR "Include ProxyStubsValidator plugin" ON)
 
 # This contains all kinds of plugins (publicely available, so they all need the plugin support library !!
 find_package(Plugins REQUIRED)
@@ -156,4 +157,8 @@ endif()
 
 if(PLUGIN_TESTUTILITY)
     add_subdirectory(TestUtility)
+endif()
+
+if(PLUGIN_PROXYSTUBSVALIDATOR)
+    add_subdirectory(ProxyStubsValidator)
 endif()
