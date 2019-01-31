@@ -67,6 +67,21 @@ SERVICE_REGISTRATION(ProxyStubsValidator, 1, 0);
     result->ErrorCode = Web::STATUS_BAD_REQUEST;
     result->Message = (_T("Method is not supported"));
 
+    if ((request.Verb == Web::Request::HTTP_POST) || (request.Verb == Web::Request::HTTP_PUT))
+    {
+        Core::TextSegmentIterator index(
+            Core::TextFragment(request.Path, _skipURL, request.Path.length() - _skipURL), false, '/');
+
+        index.Next();
+        index.Next();
+
+        if (index.Current().Text() == _T("Execute") && (!index.Next()))
+        {
+            result->ErrorCode = Web::STATUS_OK;
+            result->Message = Execute();
+        }
+    }
+
     return result;
 }
 
@@ -93,6 +108,16 @@ void ProxyStubsValidator::Deactivated(RPC::IRemoteProcess* process)
         PluginHost::WorkerPool::Instance().Submit(
             PluginHost::IShell::Job::Create(_service, PluginHost::IShell::DEACTIVATED, PluginHost::IShell::FAILURE));
     }
+}
+
+string ProxyStubsValidator::Execute(void)
+{
+    string result = _T("");
+
+    ASSERT(_proxyStubsValidatorImp != nullptr)
+    _proxyStubsValidatorImp->dummyAction();
+
+    return result = _T("Execute OK!");
 }
 
 } // namespace Plugin

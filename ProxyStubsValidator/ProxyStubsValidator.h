@@ -76,8 +76,10 @@ private:
 
     void Activated(RPC::IRemoteProcess* process);
     void Deactivated(RPC::IRemoteProcess* process);
-
     void ProcessTermination(uint32_t pid);
+
+private:
+    string Execute(void);
 
     PluginHost::IShell* _service;
     Core::Sink<Notification> _notification;
