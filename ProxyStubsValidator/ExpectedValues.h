@@ -55,6 +55,8 @@ static const string String = _T("string");
 static const float Float = std::numeric_limits<float>::max();
 static const double Double = std::numeric_limits<double>::max();
 static const long double LongDouble = std::numeric_limits<long double>::max();
+// bool
+static const bool Bool = true;
 
 } // namespace Expected
 } // namespace WPEFramework

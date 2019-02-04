@@ -70,6 +70,7 @@ public:
     virtual float returnByValueFloat() override{ return Expected::Float;}
     virtual double returnByValueDouble() override{ return Expected::Double;}
     virtual long double returnByValueLongDouble() override{ return Expected::LongDouble;}
+    virtual bool returnByValueBool() override { return Expected::Bool;}
 
     // ****************************************************************************************************************
     // return by const value
@@ -276,6 +277,11 @@ public:
         return value;
     }
 
+    virtual const bool returnByConstValueBool() override{
+        const long double value = Expected::Bool;
+        return value;
+    }
+
     // ****************************************************************************************************************
     // pass by value
     // ****************************************************************************************************************
@@ -429,6 +435,15 @@ public:
         if(v1 != Expected::Float) result = false;
         if(v2 != Expected::Double) result = false;
         if(v3 != Expected::LongDouble) result = false;
+
+        return result;
+    }
+
+    virtual bool passByValueBool(bool v1) override
+    {
+        bool result = true;
+
+        if(v1 != Expected::Bool) result = false;
 
         return result;
     }
@@ -590,6 +605,15 @@ public:
         return result;
     }
 
+    virtual bool passByConstValueBool(const bool v1) override
+    {
+        bool result = true;
+
+        if(v1 != Expected::Bool) result = false;
+
+        return result;
+    }
+
     // ****************************************************************************************************************
     // pass by reference
     // ****************************************************************************************************************
@@ -680,6 +704,10 @@ public:
         v1 = Expected::Float;
         v2 = Expected::Double;
         v3 = Expected::LongDouble;
+    }
+
+    virtual void passByReferenceBool(bool& v1) override {
+        v1 = Expected::Bool;
     }
 
     // ****************************************************************************************************************
@@ -822,6 +850,14 @@ public:
         if(v1 != Expected::Float) result = false;
         if(v2 != Expected::Double) result = false;
         if(v3 != Expected::LongDouble) result = false;
+
+        return result;
+    }
+
+    virtual bool passByConstReferenceBool(const bool& v1) override {
+        bool result = true;
+
+        if(v1 != Expected::Bool) result = false;
 
         return result;
     }

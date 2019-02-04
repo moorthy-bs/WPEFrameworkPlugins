@@ -169,6 +169,7 @@ void ProxyStubsValidator::TestReturnByValue()
     TestResult<float>("ReturnByValue<float>", _proxyStubsValidatorImp->returnByValueFloat(), Expected::Float);
     TestResult<double>("ReturnByValue<double>", _proxyStubsValidatorImp->returnByValueDouble(), Expected::Double);
     TestResult<long double>("ReturnByValue<long double>", _proxyStubsValidatorImp->returnByValueLongDouble(), Expected::LongDouble);
+    TestResult<bool>("ReturnByValue<bool>", _proxyStubsValidatorImp->returnByValueBool(), Expected::Bool);
 }
 
 void ProxyStubsValidator::TestReturnByConstValue()
@@ -211,6 +212,7 @@ void ProxyStubsValidator::TestReturnByConstValue()
     TestResult<float>("ReturnByConstValue<float>", _proxyStubsValidatorImp->returnByConstValueFloat(), Expected::Float);
     TestResult<double>("ReturnByConstValue<double>", _proxyStubsValidatorImp->returnByConstValueDouble(), Expected::Double);
     TestResult<long double>("ReturnByConstValue<long double>", _proxyStubsValidatorImp->returnByConstValueLongDouble(), Expected::LongDouble);
+    TestResult<bool>("ReturnByConstValue<bool>", _proxyStubsValidatorImp->returnByConstValueBool(), Expected::Bool);
 }
 
 void ProxyStubsValidator::TestPassByValue()
@@ -229,6 +231,7 @@ void ProxyStubsValidator::TestPassByValue()
     TestResult("PassByValue<char>", _proxyStubsValidatorImp->passByValueChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
     TestResult("PassByValue<string>", _proxyStubsValidatorImp->passByValueString(Expected::String));
     TestResult("PassByValue<float>", _proxyStubsValidatorImp->passByValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+    TestResult("PassByValue<bool>", _proxyStubsValidatorImp->passByValueBool(Expected::Bool));
 }
 
 void ProxyStubsValidator::TestPassByConstValue()
@@ -247,6 +250,7 @@ void ProxyStubsValidator::TestPassByConstValue()
     TestResult("PassByConstValue<char>", _proxyStubsValidatorImp->passByConstValueChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
     TestResult("PassByConstValue<string>", _proxyStubsValidatorImp->passByConstValueString(Expected::String));
     TestResult("PassByConstValue<float>", _proxyStubsValidatorImp->passByConstValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+    TestResult("PassByConstValue<bool>", _proxyStubsValidatorImp->passByConstValueBool(Expected::Bool));
 }
 
 void ProxyStubsValidator::TestPassByConstReference()
@@ -265,6 +269,7 @@ void ProxyStubsValidator::TestPassByConstReference()
     TestResult("PassByConstReference<char>", _proxyStubsValidatorImp->passByConstReferenceChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
     TestResult("PassByConstReference<string>", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
     TestResult("PassByConstReference<float>", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+    TestResult("PassByConstReference<bool>", _proxyStubsValidatorImp->passByConstReferenceBool(Expected::Bool));
 }
 
 void ProxyStubsValidator::TestPassByReference()
@@ -397,6 +402,12 @@ void ProxyStubsValidator::TestPassByReference()
         TestResult<float>("PassByReference<float>", v1, Expected::Float);
         TestResult<double>("PassByReference<double>", v2, Expected::Double);
         TestResult<long double>("PassByReference<long double>", v3, Expected::LongDouble);
+    }
+    {
+        bool v1;
+        _proxyStubsValidatorImp->passByReferenceBool(v1);
+
+        TestResult<bool>("PassByReference<bool>", v1, Expected::Bool);
     }
 }
 
