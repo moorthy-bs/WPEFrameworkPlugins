@@ -115,9 +115,19 @@ string ProxyStubsValidator::Execute(void)
     string result = _T("");
 
     ASSERT(_proxyStubsValidatorImp != nullptr)
-    _proxyStubsValidatorImp->dummyAction();
+    TestReturnByValue("uint8_t", _proxyStubsValidatorImp->returnByValueUint8t(), ProxyStubsValidatorImp::ExpectedUint8t);
 
     return result = _T("Execute OK!");
+}
+
+template<typename T>
+void ProxyStubsValidator::TestReturnByValue(const string& name, T returned, T expected){
+    if(returned == expected)
+    {
+        TRACE(Trace::Information, (_T("%s: PASS"), name.c_str()));
+    } else {
+        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+    }
 }
 
 } // namespace Plugin
