@@ -48,6 +48,9 @@ public:
         , _proxyStubsValidatorImp(nullptr)
         , _skipURL(0)
         , _pid(0)
+        , _passCount(0)
+        , _failCount(0)
+        , _totalCount(0)
     {
     }
 
@@ -81,14 +84,17 @@ private:
 private:
     string Execute(void);
 
-    template<typename T>
-    void TestReturnByValue(const string& name, T returned, T expected);
+    template <typename T> void TestReturnByValue(const string& name, T returned, T expected);
 
     PluginHost::IShell* _service;
     Core::Sink<Notification> _notification;
     Exchange::IProxyStubsValidator* _proxyStubsValidatorImp;
     uint8_t _skipURL;
     uint32_t _pid;
+
+    uint32_t _passCount;
+    uint32_t _failCount;
+    uint32_t _totalCount;
 };
 
 } // namespace Plugin
