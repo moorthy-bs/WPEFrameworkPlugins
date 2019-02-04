@@ -167,6 +167,56 @@ string ProxyStubsValidator::Execute(void)
     TestReturnByValue<double>("double", _proxyStubsValidatorImp->returnByValueDouble(), Expected::Double);
     TestReturnByValue<long double>("long double", _proxyStubsValidatorImp->returnByValueLongDouble(), Expected::LongDouble);
 
+    // Start return by const value tests
+    TestReturnByConstValue<uint8_t>("uint8_t", _proxyStubsValidatorImp->returnByConstValueUint8t(), Expected::Uint8t);
+    TestReturnByConstValue<uint16_t>("uint16_t", _proxyStubsValidatorImp->returnByConstValueUint16t(), Expected::Uint16t);
+    TestReturnByConstValue<uint32_t>("uint32_t", _proxyStubsValidatorImp->returnByConstValueUint32t(), Expected::Uint32t);
+    TestReturnByConstValue<uint64_t>("uint64_t", _proxyStubsValidatorImp->returnByConstValueUint64t(), Expected::Uint64t);
+
+    TestReturnByConstValue<int8_t>("int8_t", _proxyStubsValidatorImp->returnByConstValueInt8t(), Expected::Int8t);
+    TestReturnByConstValue<int16_t>("int16_t", _proxyStubsValidatorImp->returnByConstValueInt16t(), Expected::Int16t);
+    TestReturnByConstValue<int32_t>("int32_t", _proxyStubsValidatorImp->returnByConstValueInt32t(), Expected::Int32t);
+    TestReturnByConstValue<int64_t>("int64_t", _proxyStubsValidatorImp->returnByConstValueInt64t(), Expected::Int64t);
+
+    TestReturnByConstValue<short>("short", _proxyStubsValidatorImp->returnByConstValueShort(), Expected::Short);
+    TestReturnByConstValue<short int>("short int", _proxyStubsValidatorImp->returnByConstValueShortInt(), Expected::ShortInt);
+    TestReturnByConstValue<signed short>("signed short", _proxyStubsValidatorImp->returnByConstValueSignedShort(), Expected::SignedShort);
+    TestReturnByConstValue<signed short int>("signed short int", _proxyStubsValidatorImp->returnByConstValueSignedShortInt(), Expected::SignedShortInt);
+
+    TestReturnByConstValue<unsigned short>("unsigned short", _proxyStubsValidatorImp->returnByConstValueUnsignedShort(), Expected::UnsignedShort);
+    TestReturnByConstValue<unsigned short int>("unsigned short int", _proxyStubsValidatorImp->returnByConstValueUnsignedShortInt(), Expected::UnsignedShortInt);
+
+    TestReturnByConstValue<int>("int", _proxyStubsValidatorImp->returnByConstValueInt(), Expected::Int);
+    TestReturnByConstValue<signed>("signed", _proxyStubsValidatorImp->returnByConstValueSigned(), Expected::Signed);
+    TestReturnByConstValue<signed int>("signed int", _proxyStubsValidatorImp->returnByConstValueSignedInt(), Expected::SignedInt);
+
+    TestReturnByConstValue<unsigned>("unsigned", _proxyStubsValidatorImp->returnByConstValueUnsigned(), Expected::Unsigned);
+    TestReturnByConstValue<unsigned int>("unsigned int", _proxyStubsValidatorImp->returnByConstValueUnsignedInt(), Expected::UnsignedInt);
+
+    TestReturnByConstValue<long>("long", _proxyStubsValidatorImp->returnByConstValueLong(), Expected::Long);
+    TestReturnByConstValue<long int>("long int", _proxyStubsValidatorImp->returnByConstValueLongInt(), Expected::LongInt);
+    TestReturnByConstValue<signed long>("signed long", _proxyStubsValidatorImp->returnByConstValueSignedLong(), Expected::SignedLong);
+    TestReturnByConstValue<signed long int>("signed long int", _proxyStubsValidatorImp->returnByConstValueSignedLongInt(), Expected::SignedLongInt);
+
+    TestReturnByConstValue<unsigned long>("unsigned long", _proxyStubsValidatorImp->returnByConstValueUnsignedLong(), Expected::UnsignedLong);
+    TestReturnByConstValue<unsigned long int>("unsigned long int", _proxyStubsValidatorImp->returnByConstValueUnsignedLongInt(), Expected::UnsignedLongInt);
+
+    TestReturnByConstValue<long long>("long long", _proxyStubsValidatorImp->returnByConstValueLongLong(), Expected::LongLong);
+    TestReturnByConstValue<long long int>("long long int", _proxyStubsValidatorImp->returnByConstValueLongLongInt(), Expected::LongLongInt);
+    TestReturnByConstValue<signed long long>("signed long long", _proxyStubsValidatorImp->returnByConstValueSignedLongLong(), Expected::SignedLongLong);
+    TestReturnByConstValue<signed long long int>("signed long long int", _proxyStubsValidatorImp->returnByConstValueSignedLongLongInt(), Expected::SignedLongLongInt);
+
+    TestReturnByConstValue<unsigned long long>("unsigned long long", _proxyStubsValidatorImp->returnByConstValueUnsignedLongLong(), Expected::UnsignedLongLong);
+    TestReturnByConstValue<unsigned long long int>("unsigned long long int", _proxyStubsValidatorImp->returnByConstValueUnsignedLongLongInt(), Expected::UnsignedLongLongInt);
+
+    TestReturnByConstValue<signed char>("signed char", _proxyStubsValidatorImp->returnByConstValueSignedChar(), Expected::SignedChar);
+    TestReturnByConstValue<unsigned char>("unsigned char", _proxyStubsValidatorImp->returnByConstValueUnsignedChar(), Expected::UnsignedChar);
+    TestReturnByConstValue<char>("char", _proxyStubsValidatorImp->returnByConstValueChar(), Expected::Char);
+
+    TestReturnByConstValue<float>("float", _proxyStubsValidatorImp->returnByConstValueFloat(), Expected::Float);
+    TestReturnByConstValue<double>("double", _proxyStubsValidatorImp->returnByConstValueDouble(), Expected::Double);
+    TestReturnByConstValue<long double>("long double", _proxyStubsValidatorImp->returnByConstValueLongDouble(), Expected::LongDouble);
+
     TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
     return result = _T("Execute OK!");
 }
@@ -184,5 +234,17 @@ void ProxyStubsValidator::TestReturnByValue(const string& name, T returned, T ex
     _totalCount++;
 }
 
+template<typename T>
+void ProxyStubsValidator::TestReturnByConstValue(const string& name, T returned, T expected){
+    if(returned == expected)
+    {
+        _passCount++;
+        TRACE(Trace::Information, (_T("ReturnByConstValue<%s>: PASS"), name.c_str()));
+    } else {
+        _failCount++;
+        TRACE(Trace::Information, (_T("ReturnByConstValue<%s>: FAIL"), name.c_str()));
+    }
+    _totalCount++;
+}
 } // namespace Plugin
 } // namespace WPEFramework

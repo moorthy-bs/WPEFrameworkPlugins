@@ -85,7 +85,7 @@ private:
     string Execute(void);
 
     template <typename T> void TestReturnByValue(const string& name, T returned, T expected);
-
+    template <typename T> void TestReturnByConstValue(const string& name, T returned, T expected);
     PluginHost::IShell* _service;
     Core::Sink<Notification> _notification;
     Exchange::IProxyStubsValidator* _proxyStubsValidatorImp;
