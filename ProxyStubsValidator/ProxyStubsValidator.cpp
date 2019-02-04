@@ -247,6 +247,136 @@ string ProxyStubsValidator::Execute(void)
     TestPassByConstValue("string", _proxyStubsValidatorImp->passByConstValueString(Expected::String));
     TestPassByConstValue("float", _proxyStubsValidatorImp->passByConstValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
 
+    // Start pass by reference
+    {
+        uint8_t v1;
+        uint16_t v2;
+        uint32_t v3;
+        uint64_t v4;
+        _proxyStubsValidatorImp->passByReferenceUIntStrict(v1, v2, v3, v4);
+
+        TestPassByReference<uint8_t>("uint8_t", v1, Expected::Uint8t);
+        TestPassByReference<uint16_t>("uint16_t", v2, Expected::Uint16t);
+        TestPassByReference<uint32_t>("uint32_t", v3, Expected::Uint32t);
+        TestPassByReference<uint64_t>("uint64_t", v4, Expected::Uint64t);
+    }
+    {
+        int8_t v1;
+        int16_t v2;
+        int32_t v3;
+        int64_t v4;
+        _proxyStubsValidatorImp->passByReferenceIntStrict(v1, v2, v3, v4);
+
+        TestPassByReference<int8_t>("int8_t", v1, Expected::Int8t);
+        TestPassByReference<int16_t>("int16_t", v2, Expected::Int16t);
+        TestPassByReference<int32_t>("int32_t", v3, Expected::Int32t);
+        TestPassByReference<int64_t>("int64_t", v4, Expected::Int64t);
+    }
+    {
+        short v1;
+        short int v2;
+        signed short v3;
+        signed short int v4;
+        _proxyStubsValidatorImp->passByReferenceShortInt(v1, v2, v3, v4);
+
+        TestPassByReference<short>("short", v1, Expected::Short);
+        TestPassByReference<short int>("short int", v2, Expected::ShortInt);
+        TestPassByReference<signed short>("signed short", v3, Expected::SignedShort);
+        TestPassByReference<signed short int>("signed short int", v4, Expected::SignedShortInt);
+    }
+    {
+        unsigned short v1;
+        unsigned short int v2;
+        _proxyStubsValidatorImp->passByReferenceUnsignedShortInt(v1, v2);
+
+        TestPassByReference<unsigned short>("unsigned short", v1, Expected::UnsignedShort);
+        TestPassByReference<unsigned short int>("unsigned short int", v2, Expected::UnsignedShortInt);
+    }
+    {
+        int v1;
+        signed v2;
+        signed int v3;
+        _proxyStubsValidatorImp->passByReferenceInt(v1, v2, v3);
+
+        TestPassByReference<int>("int", v1, Expected::Int);
+        TestPassByReference<signed>("signed", v2, Expected::Signed);
+        TestPassByReference<signed int>("signed int", v3, Expected::SignedInt);
+    }
+    {
+        unsigned v1;
+        unsigned int v2;
+        _proxyStubsValidatorImp->passByReferenceUnsignedInt(v1, v2);
+
+        TestPassByReference<unsigned>("unsigned", v1, Expected::Unsigned);
+        TestPassByReference<unsigned int>("unsigned int", v2, Expected::UnsignedInt);
+    }
+    {
+        long v1;
+        long int v2;
+        signed long v3;
+        signed long int v4;
+        _proxyStubsValidatorImp->passByReferenceLongInt(v1, v2, v3, v4);
+
+        TestPassByReference<long>("long", v1, Expected::Long);
+        TestPassByReference<long int>("long int", v2, Expected::LongInt);
+        TestPassByReference<signed long>("signed long", v3, Expected::SignedLong);
+        TestPassByReference<signed long int>("signed long int", v4, Expected::SignedLongInt);
+    }
+    {
+        unsigned long v1;
+        unsigned long int v2;
+        _proxyStubsValidatorImp->passByReferenceUnsignedLongInt(v1, v2);
+
+        TestPassByReference<unsigned long>("unsigned long", v1, Expected::UnsignedLong);
+        TestPassByReference<unsigned long int>("unsigned long int", v2, Expected::UnsignedLongInt);
+    }
+    {
+        long long v1;
+        long long int v2;
+        signed long long v3;
+        signed long long int v4;
+        _proxyStubsValidatorImp->passByReferenceLongLongInt(v1, v2, v3, v4);
+
+        TestPassByReference<long long>("long long", v1, Expected::LongLong);
+        TestPassByReference<long long int>("long long int", v2, Expected::LongLongInt);
+        TestPassByReference<signed long long>("signed long long", v3, Expected::SignedLongLong);
+        TestPassByReference<signed long long int>("signed long long int", v4, Expected::SignedLongLongInt);
+    }
+    {
+        unsigned long long v1;
+        unsigned long long int v2;
+        _proxyStubsValidatorImp->passByReferenceUnsignedLongLongInt(v1, v2);
+
+        TestPassByReference<unsigned long long>("unsigned long long", v1, Expected::UnsignedLongLong);
+        TestPassByReference<unsigned long long int>("unsigned long long int", v2, Expected::UnsignedLongLongInt);
+    }
+    {
+        char v1;
+        signed char v2;
+        unsigned char v3;
+        _proxyStubsValidatorImp->passByReferenceChar(v1, v2, v3);
+
+        TestPassByReference<char>("char", v1, Expected::Char);
+        TestPassByReference<signed char>("signed char", v2, Expected::SignedChar);
+        TestPassByReference<unsigned char>("unsigned char", v3, Expected::UnsignedChar);
+    }
+    {
+        string v1;
+        _proxyStubsValidatorImp->passByReferenceString(v1);
+
+        TestPassByReference<string>("string", v1, Expected::String);
+    }
+    {
+        float v1;
+        double v2;
+        long double v3;
+        _proxyStubsValidatorImp->passByReferenceFloat(v1, v2, v3);
+
+        TestPassByReference<float>("float", v1, Expected::Float);
+        TestPassByReference<double>("double", v2, Expected::Double);
+        TestPassByReference<long double>("long double", v3, Expected::LongDouble);
+    }
+
     TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
     return result = _T("Execute OK!");
 }
@@ -303,5 +433,18 @@ void ProxyStubsValidator::TestPassByConstValue(const string& name, bool result)
     _totalCount++;
 }
 
+template<typename T>
+void ProxyStubsValidator::TestPassByReference(const string& name, T returned, T expected)
+{
+    if(returned == expected)
+    {
+        _passCount++;
+        TRACE(Trace::Information, (_T("PassByReference<%s>: PASS"), name.c_str()));
+    } else {
+        _failCount++;
+        TRACE(Trace::Information, (_T("PassByReference<%s>: FAIL"), name.c_str()));
+    }
+    _totalCount++;
+}
 } // namespace Plugin
 } // namespace WPEFramework
