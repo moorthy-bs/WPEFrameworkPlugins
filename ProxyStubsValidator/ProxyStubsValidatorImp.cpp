@@ -404,9 +404,9 @@ public:
     {
         bool result = true;
 
-        if(v1 != Expected::SignedChar) result = false;
-        if(v2 != Expected::UnsignedChar) result = false;
-        if(v3 != Expected::Char) result = false;
+        if(v1 != Expected::Char) result = false;
+        if(v2 != Expected::SignedChar) result = false;
+        if(v3 != Expected::UnsignedChar) result = false;
 
         return result;
     }
