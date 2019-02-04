@@ -377,7 +377,23 @@ string ProxyStubsValidator::Execute(void)
         TestPassByReference<long double>("long double", v3, Expected::LongDouble);
     }
 
+    // Start pass by const value tests
+    TestPassByConstReference("unsigned int (with bit precision)", _proxyStubsValidatorImp->passByConstReferenceUIntStrict(Expected::Uint8t, Expected::Uint16t, Expected::Uint32t, Expected::Uint64t));
+    TestPassByConstReference("int (with bit precision)", _proxyStubsValidatorImp->passByConstReferenceIntStrict(Expected::Int8t, Expected::Int16t, Expected::Int32t, Expected::Int64t));
+    TestPassByConstReference("short int", _proxyStubsValidatorImp->passByConstReferenceShortInt(Expected::Short, Expected::ShortInt, Expected::SignedShort, Expected::SignedShortInt));
+    TestPassByConstReference("unsigned short int", _proxyStubsValidatorImp->passByConstReferenceUnsignedShortInt(Expected::UnsignedShort, Expected::UnsignedShortInt));
+    TestPassByConstReference("int", _proxyStubsValidatorImp->passByConstReferenceInt(Expected::Int, Expected::Signed, Expected::SignedInt));
+    TestPassByConstReference("unsigned int", _proxyStubsValidatorImp->passByConstReferenceUnsignedInt(Expected::Unsigned, Expected::UnsignedInt));
+    TestPassByConstReference("long int", _proxyStubsValidatorImp->passByConstReferenceLongInt(Expected::Long, Expected::LongInt, Expected::SignedLong, Expected::SignedLongInt));
+    TestPassByConstReference("unsigned long int", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongInt(Expected::UnsignedLong, Expected::UnsignedLongInt));
+    TestPassByConstReference("long long int", _proxyStubsValidatorImp->passByConstReferenceLongLongInt(Expected::LongLong, Expected::LongLongInt, Expected::SignedLongLong, Expected::SignedLongLongInt));
+    TestPassByConstReference("unsigned long long int", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongLongInt(Expected::UnsignedLongLong, Expected::UnsignedLongLongInt));
+    TestPassByConstReference("char", _proxyStubsValidatorImp->passByConstReferenceChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
+    TestPassByConstReference("string", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
+    TestPassByConstReference("float", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+
     TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
+
     return result = _T("Execute OK!");
 }
 
@@ -446,5 +462,19 @@ void ProxyStubsValidator::TestPassByReference(const string& name, T returned, T 
     }
     _totalCount++;
 }
+
+void ProxyStubsValidator::TestPassByConstReference(const string& name, bool result)
+{
+    if(result)
+    {
+        _passCount++;
+        TRACE(Trace::Information, (_T("TestPassByConstReference<%s>: PASS"), name.c_str()));
+    } else {
+        _failCount++;
+        TRACE(Trace::Information, (_T("TestPassByConstReference<%s>: FAIL"), name.c_str()));
+    }
+    _totalCount++;
+}
+
 } // namespace Plugin
 } // namespace WPEFramework

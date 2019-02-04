@@ -752,7 +752,7 @@ public:
     }
 
     // long int
-    virtual bool passByConstReferenceLongInt(const long& v1, long int& v2, const signed long& v3, const signed long int& v4) override {
+    virtual bool passByConstReferenceLongInt(const long& v1, const long int& v2, const signed long& v3, const signed long int& v4) override {
         bool result = true;
 
         if(v1 != Expected::Long) result = false;
