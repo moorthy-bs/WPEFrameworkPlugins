@@ -84,12 +84,9 @@ private:
 private:
     string Execute(void);
 
-    template <typename T> void TestReturnByValue(const string& name, T returned, T expected);
-    template <typename T> void TestReturnByConstValue(const string& name, T returned, T expected);
-    void TestPassByValue(const string& name, bool result);
-    void TestPassByConstValue(const string& name, bool result);
-    template <typename T> void TestPassByReference(const string& name, T returned, T expected);
-    void TestPassByConstReference(const string& name, bool result);
+    template<typename T> void TestResult(const string& msg, T returned, T expected);
+    void TestResult(const string& msg, bool result);
+
 
     PluginHost::IShell* _service;
     Core::Sink<Notification> _notification;
