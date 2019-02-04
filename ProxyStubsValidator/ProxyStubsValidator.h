@@ -81,8 +81,17 @@ private:
     void Deactivated(RPC::IRemoteProcess* process);
     void ProcessTermination(uint32_t pid);
 
-private:
+public:
     string Execute(void);
+
+private:
+
+    void TestReturnByValue();
+    void TestReturnByConstValue();
+    void TestPassByValue();
+    void TestPassByConstValue();
+    void TestPassByConstReference();
+    void TestPassByReference();
 
     template<typename T> void TestResult(const string& msg, T returned, T expected);
     void TestResult(const string& msg, bool result);

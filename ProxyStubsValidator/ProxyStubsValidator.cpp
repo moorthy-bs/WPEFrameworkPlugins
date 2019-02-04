@@ -117,8 +117,21 @@ string ProxyStubsValidator::Execute(void)
     // ToDo: should be moved to other thread?
     string result = _T("");
 
+    TestReturnByValue();
+    TestReturnByConstValue();
+    TestPassByValue();
+    TestPassByConstValue();
+    TestPassByReference();
+    TestPassByConstReference();
+
+    TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
+
+    return result = _T("Execute OK!");
+}
+
+void ProxyStubsValidator::TestReturnByValue()
+{
     ASSERT(_proxyStubsValidatorImp != nullptr)
-    // Start return by value tests
     TestResult<uint8_t>("ReturnByValue<uint8_t>", _proxyStubsValidatorImp->returnByValueUint8t(), Expected::Uint8t);
     TestResult<uint16_t>("ReturnByValue<uint16_t>", _proxyStubsValidatorImp->returnByValueUint16t(), Expected::Uint16t);
     TestResult<uint32_t>("ReturnByValue<uint32_t>", _proxyStubsValidatorImp->returnByValueUint32t(), Expected::Uint32t);
@@ -156,8 +169,11 @@ string ProxyStubsValidator::Execute(void)
     TestResult<float>("ReturnByValue<float>", _proxyStubsValidatorImp->returnByValueFloat(), Expected::Float);
     TestResult<double>("ReturnByValue<double>", _proxyStubsValidatorImp->returnByValueDouble(), Expected::Double);
     TestResult<long double>("ReturnByValue<long double>", _proxyStubsValidatorImp->returnByValueLongDouble(), Expected::LongDouble);
+}
 
-    // Start return by const value tests
+void ProxyStubsValidator::TestReturnByConstValue()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
     TestResult<uint8_t>("ReturnByConstValue<uint8_t>", _proxyStubsValidatorImp->returnByConstValueUint8t(), Expected::Uint8t);
     TestResult<uint16_t>("ReturnByConstValue<uint16_t>", _proxyStubsValidatorImp->returnByConstValueUint16t(), Expected::Uint16t);
     TestResult<uint32_t>("ReturnByConstValue<uint32_t>", _proxyStubsValidatorImp->returnByConstValueUint32t(), Expected::Uint32t);
@@ -195,8 +211,11 @@ string ProxyStubsValidator::Execute(void)
     TestResult<float>("ReturnByConstValue<float>", _proxyStubsValidatorImp->returnByConstValueFloat(), Expected::Float);
     TestResult<double>("ReturnByConstValue<double>", _proxyStubsValidatorImp->returnByConstValueDouble(), Expected::Double);
     TestResult<long double>("ReturnByConstValue<long double>", _proxyStubsValidatorImp->returnByConstValueLongDouble(), Expected::LongDouble);
+}
 
-    // Start pass by value tests
+void ProxyStubsValidator::TestPassByValue()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
     TestResult("PassByValue<unsigned int (with bit precision)>", _proxyStubsValidatorImp->passByValueUIntStrict(Expected::Uint8t, Expected::Uint16t, Expected::Uint32t, Expected::Uint64t));
     TestResult("PassByValue<int (with bit precision)>", _proxyStubsValidatorImp->passByValueIntStrict(Expected::Int8t, Expected::Int16t, Expected::Int32t, Expected::Int64t));
     TestResult("PassByValue<short int>", _proxyStubsValidatorImp->passByValueShortInt(Expected::Short, Expected::ShortInt, Expected::SignedShort, Expected::SignedShortInt));
@@ -210,8 +229,11 @@ string ProxyStubsValidator::Execute(void)
     TestResult("PassByValue<char>", _proxyStubsValidatorImp->passByValueChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
     TestResult("PassByValue<string>", _proxyStubsValidatorImp->passByValueString(Expected::String));
     TestResult("PassByValue<float>", _proxyStubsValidatorImp->passByValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+}
 
-    // Start pass by const value tests
+void ProxyStubsValidator::TestPassByConstValue()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
     TestResult("PassByConstValue<unsigned int (with bit precision)>", _proxyStubsValidatorImp->passByConstValueUIntStrict(Expected::Uint8t, Expected::Uint16t, Expected::Uint32t, Expected::Uint64t));
     TestResult("PassByConstValue<int (with bit precision)>", _proxyStubsValidatorImp->passByConstValueIntStrict(Expected::Int8t, Expected::Int16t, Expected::Int32t, Expected::Int64t));
     TestResult("PassByConstValue<short int>", _proxyStubsValidatorImp->passByConstValueShortInt(Expected::Short, Expected::ShortInt, Expected::SignedShort, Expected::SignedShortInt));
@@ -225,8 +247,29 @@ string ProxyStubsValidator::Execute(void)
     TestResult("PassByConstValue<char>", _proxyStubsValidatorImp->passByConstValueChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
     TestResult("PassByConstValue<string>", _proxyStubsValidatorImp->passByConstValueString(Expected::String));
     TestResult("PassByConstValue<float>", _proxyStubsValidatorImp->passByConstValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+}
 
-    // Start pass by reference
+void ProxyStubsValidator::TestPassByConstReference()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
+    TestResult("PassByConstReference<unsigned int (with bit precision)>", _proxyStubsValidatorImp->passByConstReferenceUIntStrict(Expected::Uint8t, Expected::Uint16t, Expected::Uint32t, Expected::Uint64t));
+    TestResult("PassByConstReference<int (with bit precision)>", _proxyStubsValidatorImp->passByConstReferenceIntStrict(Expected::Int8t, Expected::Int16t, Expected::Int32t, Expected::Int64t));
+    TestResult("PassByConstReference<short int>", _proxyStubsValidatorImp->passByConstReferenceShortInt(Expected::Short, Expected::ShortInt, Expected::SignedShort, Expected::SignedShortInt));
+    TestResult("PassByConstReference<unsigned short int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedShortInt(Expected::UnsignedShort, Expected::UnsignedShortInt));
+    TestResult("PassByConstReference<int>", _proxyStubsValidatorImp->passByConstReferenceInt(Expected::Int, Expected::Signed, Expected::SignedInt));
+    TestResult("PassByConstReference<unsigned int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedInt(Expected::Unsigned, Expected::UnsignedInt));
+    TestResult("PassByConstReference<long int>", _proxyStubsValidatorImp->passByConstReferenceLongInt(Expected::Long, Expected::LongInt, Expected::SignedLong, Expected::SignedLongInt));
+    TestResult("PassByConstReference<unsigned long int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongInt(Expected::UnsignedLong, Expected::UnsignedLongInt));
+    TestResult("PassByConstReference<long long int>", _proxyStubsValidatorImp->passByConstReferenceLongLongInt(Expected::LongLong, Expected::LongLongInt, Expected::SignedLongLong, Expected::SignedLongLongInt));
+    TestResult("PassByConstReference<unsigned long long int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongLongInt(Expected::UnsignedLongLong, Expected::UnsignedLongLongInt));
+    TestResult("PassByConstReference<char>", _proxyStubsValidatorImp->passByConstReferenceChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
+    TestResult("PassByConstReference<string>", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
+    TestResult("PassByConstReference<float>", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
+}
+
+void ProxyStubsValidator::TestPassByReference()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
     {
         uint8_t v1;
         uint16_t v2;
@@ -355,27 +398,7 @@ string ProxyStubsValidator::Execute(void)
         TestResult<double>("PassByReference<double>", v2, Expected::Double);
         TestResult<long double>("PassByReference<long double>", v3, Expected::LongDouble);
     }
-
-    // Start pass by const value tests
-    TestResult("PassByConstReference<unsigned int (with bit precision)>", _proxyStubsValidatorImp->passByConstReferenceUIntStrict(Expected::Uint8t, Expected::Uint16t, Expected::Uint32t, Expected::Uint64t));
-    TestResult("PassByConstReference<int (with bit precision)>", _proxyStubsValidatorImp->passByConstReferenceIntStrict(Expected::Int8t, Expected::Int16t, Expected::Int32t, Expected::Int64t));
-    TestResult("PassByConstReference<short int>", _proxyStubsValidatorImp->passByConstReferenceShortInt(Expected::Short, Expected::ShortInt, Expected::SignedShort, Expected::SignedShortInt));
-    TestResult("PassByConstReference<unsigned short int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedShortInt(Expected::UnsignedShort, Expected::UnsignedShortInt));
-    TestResult("PassByConstReference<int>", _proxyStubsValidatorImp->passByConstReferenceInt(Expected::Int, Expected::Signed, Expected::SignedInt));
-    TestResult("PassByConstReference<unsigned int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedInt(Expected::Unsigned, Expected::UnsignedInt));
-    TestResult("PassByConstReference<long int>", _proxyStubsValidatorImp->passByConstReferenceLongInt(Expected::Long, Expected::LongInt, Expected::SignedLong, Expected::SignedLongInt));
-    TestResult("PassByConstReference<unsigned long int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongInt(Expected::UnsignedLong, Expected::UnsignedLongInt));
-    TestResult("PassByConstReference<long long int>", _proxyStubsValidatorImp->passByConstReferenceLongLongInt(Expected::LongLong, Expected::LongLongInt, Expected::SignedLongLong, Expected::SignedLongLongInt));
-    TestResult("PassByConstReference<unsigned long long int>", _proxyStubsValidatorImp->passByConstReferenceUnsignedLongLongInt(Expected::UnsignedLongLong, Expected::UnsignedLongLongInt));
-    TestResult("PassByConstReference<char>", _proxyStubsValidatorImp->passByConstReferenceChar(Expected::Char, Expected::SignedChar, Expected::UnsignedChar));
-    TestResult("PassByConstReference<string>", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
-    TestResult("PassByConstReference<float>", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
-
-    TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
-
-    return result = _T("Execute OK!");
 }
-
 
 template<typename T>
 void ProxyStubsValidator::TestResult(const string& name, T returned, T expected){
