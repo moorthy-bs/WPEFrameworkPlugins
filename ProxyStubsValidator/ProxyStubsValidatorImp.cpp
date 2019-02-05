@@ -71,6 +71,10 @@ public:
     virtual double returnByValueDouble() override{ return Expected::Double;}
     virtual long double returnByValueLongDouble() override{ return Expected::LongDouble;}
     virtual bool returnByValueBool() override { return Expected::Bool;}
+    // enum
+    virtual Enum returnByValueEnum() override { return Expected::Enum;}
+    virtual ScopedEnum returnByValueScopedEnum() override { return Expected::ScopedEnum;}
+    virtual ScopedTypedEnum returnByValueScopedTypedEnum() override { return Expected::ScopedTypedEnum;}
 
     // ****************************************************************************************************************
     // return by const value
@@ -278,7 +282,22 @@ public:
     }
 
     virtual const bool returnByConstValueBool() override{
-        const long double value = Expected::Bool;
+        const bool value = Expected::Bool;
+        return value;
+    }
+
+    virtual const Enum returnByConstValueEnum() override{
+        const Enum value = Expected::Enum;
+        return value;
+    }
+
+    virtual const ScopedEnum returnByConstValueScopedEnum() override{
+        const ScopedEnum value = Expected::ScopedEnum;
+        return value;
+    }
+
+    virtual const ScopedTypedEnum returnByConstValueScopedTypedEnum() override{
+        const ScopedTypedEnum value = Expected::ScopedTypedEnum;
         return value;
     }
 
@@ -439,11 +458,24 @@ public:
         return result;
     }
 
+    // bool
     virtual bool passByValueBool(bool v1) override
     {
         bool result = true;
 
         if(v1 != Expected::Bool) result = false;
+
+        return result;
+    }
+
+    // enum
+    virtual bool passByValueEnum(Enum v1, ScopedEnum v2, ScopedTypedEnum v3) override
+    {
+        bool result = true;
+
+        if(v1 != Expected::Enum) result = false;
+        if(v2 != Expected::ScopedEnum) result = false;
+        if(v3 != Expected::ScopedTypedEnum) result = false;
 
         return result;
     }
@@ -605,11 +637,24 @@ public:
         return result;
     }
 
+    // bool
     virtual bool passByConstValueBool(const bool v1) override
     {
         bool result = true;
 
         if(v1 != Expected::Bool) result = false;
+
+        return result;
+    }
+
+    // enum
+    virtual bool passByConstValueEnum(const Enum v1, const ScopedEnum v2, const ScopedTypedEnum v3) override
+    {
+        bool result = true;
+
+        if(v1 != Expected::Enum) result = false;
+        if(v2 != Expected::ScopedEnum) result = false;
+        if(v3 != Expected::ScopedTypedEnum) result = false;
 
         return result;
     }

@@ -2,6 +2,8 @@
 
 #include "Module.h"
 
+#include <interfaces/IProxyStubsValidator.h>
+
 namespace WPEFramework {
 namespace Expected {
 
@@ -57,6 +59,10 @@ static const double Double = std::numeric_limits<double>::max();
 static const long double LongDouble = std::numeric_limits<long double>::max();
 // bool
 static const bool Bool = true;
+// enum
+static const Exchange::IProxyStubsValidator::Enum Enum = Exchange::IProxyStubsValidator::Enum::ENUM_VALUE_2;
+static const Exchange::IProxyStubsValidator::ScopedEnum ScopedEnum = Exchange::IProxyStubsValidator::ScopedEnum::ScopedEnumValue2;
+static const Exchange::IProxyStubsValidator::ScopedTypedEnum ScopedTypedEnum = Exchange::IProxyStubsValidator::ScopedTypedEnum::ScopedTypedEnumValue2;
 
 } // namespace Expected
 } // namespace WPEFramework
