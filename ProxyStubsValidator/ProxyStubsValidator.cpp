@@ -173,7 +173,7 @@ void ProxyStubsValidator::TestReturnByValue()
     TestResult<Exchange::IProxyStubsValidator::Enum>("ReturnByValue<Enum>", _proxyStubsValidatorImp->returnByValueEnum(), Expected::Enum);
     TestResult<Exchange::IProxyStubsValidator::ScopedEnum>("ReturnByValue<ScopedEnum>", _proxyStubsValidatorImp->returnByValueScopedEnum(), Expected::ScopedEnum);
     TestResult<Exchange::IProxyStubsValidator::ScopedTypedEnum>("ReturnByValue<ScopedTypedEnum>", _proxyStubsValidatorImp->returnByValueScopedTypedEnum(), Expected::ScopedTypedEnum);
-
+    TestResult("ReturnByValue<Structure>", CompareStructure(_proxyStubsValidatorImp->returnByValueStructure(), Expected::Structure));
 }
 
 void ProxyStubsValidator::TestReturnByConstValue()
@@ -220,6 +220,7 @@ void ProxyStubsValidator::TestReturnByConstValue()
     TestResult<Exchange::IProxyStubsValidator::Enum>("ReturnByConstValue<Enum>", _proxyStubsValidatorImp->returnByConstValueEnum(), Expected::Enum);
     TestResult<Exchange::IProxyStubsValidator::ScopedEnum>("ReturnByConstValue<ScopedEnum>", _proxyStubsValidatorImp->returnByConstValueScopedEnum(), Expected::ScopedEnum);
     TestResult<Exchange::IProxyStubsValidator::ScopedTypedEnum>("ReturnByConstValue<ScopedTypedEnum>", _proxyStubsValidatorImp->returnByConstValueScopedTypedEnum(), Expected::ScopedTypedEnum);
+    TestResult("ReturnByConstValue<Structure>", CompareStructure(_proxyStubsValidatorImp->returnByConstValueStructure(), Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByValue()
@@ -240,6 +241,7 @@ void ProxyStubsValidator::TestPassByValue()
     TestResult("PassByValue<float>", _proxyStubsValidatorImp->passByValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByValue<bool>", _proxyStubsValidatorImp->passByValueBool(Expected::Bool));
     TestResult("PassByValue<Enum>", _proxyStubsValidatorImp->passByValueEnum(Expected::Enum, Expected::ScopedEnum, Expected::ScopedTypedEnum));
+    TestResult("PassByValue<Strucutre>", _proxyStubsValidatorImp->passByValueStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByConstValue()
@@ -260,6 +262,7 @@ void ProxyStubsValidator::TestPassByConstValue()
     TestResult("PassByConstValue<float>", _proxyStubsValidatorImp->passByConstValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByConstValue<bool>", _proxyStubsValidatorImp->passByConstValueBool(Expected::Bool));
     TestResult("PassByConstValue<Enum>", _proxyStubsValidatorImp->passByConstValueEnum(Expected::Enum, Expected::ScopedEnum, Expected::ScopedTypedEnum));
+    TestResult("PassByConstValue<Strucutre>", _proxyStubsValidatorImp->passByConstValueStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByConstReference()
@@ -279,6 +282,7 @@ void ProxyStubsValidator::TestPassByConstReference()
     TestResult("PassByConstReference<string>", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
     TestResult("PassByConstReference<float>", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByConstReference<bool>", _proxyStubsValidatorImp->passByConstReferenceBool(Expected::Bool));
+    TestResult("PassByConstReference<Strucutre>", _proxyStubsValidatorImp->passByConstReferenceStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByReference()
@@ -444,6 +448,16 @@ void ProxyStubsValidator::TestResult(const string& name, bool result)
         TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
     }
     _totalCount++;
+}
+
+bool ProxyStubsValidator::CompareStructure(const Exchange::IProxyStubsValidator::Structure& lhs, const Exchange::IProxyStubsValidator::Structure& rhs) const
+{
+    bool status = true;
+
+    if(lhs.field1 != rhs.field1) status = false;
+    if(lhs.field2 != rhs.field2) status = false;
+
+    return status;
 }
 
 } // namespace Plugin

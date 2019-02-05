@@ -75,6 +75,8 @@ public:
     virtual Enum returnByValueEnum() override { return Expected::Enum;}
     virtual ScopedEnum returnByValueScopedEnum() override { return Expected::ScopedEnum;}
     virtual ScopedTypedEnum returnByValueScopedTypedEnum() override { return Expected::ScopedTypedEnum;}
+    // struct
+    virtual Structure returnByValueStructure() override { return Expected::Structure;}
 
     // ****************************************************************************************************************
     // return by const value
@@ -286,6 +288,7 @@ public:
         return value;
     }
 
+    // enum
     virtual const Enum returnByConstValueEnum() override{
         const Enum value = Expected::Enum;
         return value;
@@ -298,6 +301,12 @@ public:
 
     virtual const ScopedTypedEnum returnByConstValueScopedTypedEnum() override{
         const ScopedTypedEnum value = Expected::ScopedTypedEnum;
+        return value;
+    }
+
+    // struct
+    virtual const Structure returnByConstValueStructure() override{
+        const Structure value = Expected::Structure;
         return value;
     }
 
@@ -480,6 +489,17 @@ public:
         return result;
     }
 
+    // struct
+    virtual bool passByValueStructure(Structure v1) override
+    {
+        bool result = true;
+
+        if(v1.field1 != Expected::Structure.field1) result = false;
+        if(v1.field2 != Expected::Structure.field2) result = false;
+
+        return result;
+    }
+
     // ****************************************************************************************************************
     // pass by const value
     // ****************************************************************************************************************
@@ -655,6 +675,17 @@ public:
         if(v1 != Expected::Enum) result = false;
         if(v2 != Expected::ScopedEnum) result = false;
         if(v3 != Expected::ScopedTypedEnum) result = false;
+
+        return result;
+    }
+
+    // struct
+    virtual bool passByConstValueStructure(const Structure v1) override
+    {
+        bool result = true;
+
+        if(v1.field1 != Expected::Structure.field1) result = false;
+        if(v1.field2 != Expected::Structure.field2) result = false;
 
         return result;
     }
@@ -899,10 +930,22 @@ public:
         return result;
     }
 
+    // bool
     virtual bool passByConstReferenceBool(const bool& v1) override {
         bool result = true;
 
         if(v1 != Expected::Bool) result = false;
+
+        return result;
+    }
+
+    // struct
+    virtual bool passByConstReferenceStructure(const Structure& v1) override
+    {
+        bool result = true;
+
+        if(v1.field1 != Expected::Structure.field1) result = false;
+        if(v1.field2 != Expected::Structure.field2) result = false;
 
         return result;
     }

@@ -96,6 +96,9 @@ private:
     template<typename T> void TestResult(const string& msg, T returned, T expected);
     void TestResult(const string& msg, bool result);
 
+    // ToDo: move somewhere else
+    bool CompareStructure(const Exchange::IProxyStubsValidator::Structure& lhs, const Exchange::IProxyStubsValidator::Structure& rhs) const;
+
 
     PluginHost::IShell* _service;
     Core::Sink<Notification> _notification;

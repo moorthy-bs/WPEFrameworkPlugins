@@ -63,6 +63,8 @@ static const bool Bool = true;
 static const Exchange::IProxyStubsValidator::Enum Enum = Exchange::IProxyStubsValidator::Enum::ENUM_VALUE_2;
 static const Exchange::IProxyStubsValidator::ScopedEnum ScopedEnum = Exchange::IProxyStubsValidator::ScopedEnum::ScopedEnumValue2;
 static const Exchange::IProxyStubsValidator::ScopedTypedEnum ScopedTypedEnum = Exchange::IProxyStubsValidator::ScopedTypedEnum::ScopedTypedEnumValue2;
+// struct
+static const Exchange::IProxyStubsValidator::Structure Structure = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int64_t>::max() };
 
 } // namespace Expected
 } // namespace WPEFramework
