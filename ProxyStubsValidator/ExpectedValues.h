@@ -66,5 +66,33 @@ static const Exchange::IProxyStubsValidator::ScopedTypedEnum ScopedTypedEnum = E
 // struct
 static const Exchange::IProxyStubsValidator::Structure Structure = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int64_t>::max() };
 
+class InterfaceImpl : virtual public Exchange::IProxyStubsValidator::IInterface {
+private:
+    InterfaceImpl(const InterfaceImpl&) = delete;
+    InterfaceImpl& operator=(const InterfaceImpl&) = delete;
+
+public:
+    InterfaceImpl()
+        : _value(0)
+    {
+    }
+
+    BEGIN_INTERFACE_MAP(InterfaceImpl)
+    INTERFACE_ENTRY(Exchange::IProxyStubsValidator::IInterface)
+    END_INTERFACE_MAP
+
+public:
+    virtual uint8_t Increment() override { _value++; };
+    virtual uint8_t Decrement() override { _value--; };
+    virtual uint8_t Value() const override { return _value; };
+
+private:
+    uint8_t _value;
+};
+
+static Exchange::IProxyStubsValidator::IInterface* Interface(Core::Service<InterfaceImpl>::Create<Exchange::IProxyStubsValidator::IInterface>());
+
+// static Core::ServiceMetadata<InterfaceImpl, &Core::System::MODULE_NAME> Interface;
+
 } // namespace Expected
 } // namespace WPEFramework

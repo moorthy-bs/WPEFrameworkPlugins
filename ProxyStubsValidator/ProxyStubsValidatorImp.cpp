@@ -903,9 +903,9 @@ public:
     virtual bool passByConstReferenceChar(const char& v1, const signed char& v2, const unsigned char& v3) override {
         bool result = true;
 
-        if(v1 != Expected::SignedChar) result = false;
-        if(v2 != Expected::UnsignedChar) result = false;
-        if(v3 != Expected::Char) result = false;
+        if(v1 != Expected::Char) result = false;
+        if(v2 != Expected::SignedChar) result = false;
+        if(v3 != Expected::UnsignedChar) result = false;
 
         return result;
     }
@@ -948,6 +948,78 @@ public:
         if(v1.field2 != Expected::Structure.field2) result = false;
 
         return result;
+    }
+
+    // ****************************************************************************************************************
+    // pointer to interface
+    // ****************************************************************************************************************
+    virtual IInterface* returnByPointer() override {
+        ASSERT(Expected::Interface != nullptr);
+        IInterface* interface = Expected::Interface;
+
+        printf("*********** W srodku interface: %p\n", interface);
+        printf("*********** W srodku: %p\n", Expected::Interface);
+        return interface;
+    }
+
+    virtual const IInterface* returnByConstPointer() override {
+        ASSERT(Expected::Interface != nullptr);
+
+        const IInterface* interface = Expected::Interface;
+        return interface;
+    }
+
+    virtual const IInterface * const returnByConstPointerConst() override {
+        ASSERT(Expected::Interface != nullptr);
+
+        const IInterface* const interface = Expected::Interface;
+        return interface;
+    }
+
+    virtual IInterface * const returnByPointerConst() override {
+        ASSERT(Expected::Interface != nullptr);
+
+        IInterface * const interface = Expected::Interface;
+        return interface;
+    }
+
+    virtual bool passByPointer(IInterface* interface) override {
+        bool status = true;
+
+        if(interface == nullptr) status = false;
+        if(interface != Expected::Interface) status = false;
+
+        auto value = interface->Value();
+        if(value != Expected::Interface->Value()) status = false;
+
+        return status;
+    }
+
+    virtual bool passByConstPointer(const IInterface* interface) override {
+        bool status = true;
+
+        if(interface == nullptr) status = false;
+        if(interface != Expected::Interface) status = false;
+
+        return status;
+    }
+
+    virtual bool passByConstPointerConst(const IInterface* const interface) override {
+        bool status = true;
+
+        if(interface == nullptr) status = false;
+        if(interface != Expected::Interface) status = false;
+
+        return status;
+    }
+
+    virtual bool passByPointerConst(IInterface* const interface) override {
+        bool status = true;
+
+        if(interface == nullptr) status = false;
+        if(interface != Expected::Interface) status = false;
+
+        return status;
     }
 
     BEGIN_INTERFACE_MAP(ProxyStubsValidatorImp)

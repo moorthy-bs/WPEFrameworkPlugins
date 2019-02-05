@@ -121,10 +121,10 @@ string ProxyStubsValidator::Execute(void)
     TestReturnByConstValue();
     TestPassByValue();
     TestPassByConstValue();
-    TestPassByReference();
     TestPassByConstReference();
-
-    TRACE(Trace::Information, (_T("Pass: %d, Fail: %d, Total: %d"), _passCount, _failCount, _totalCount));
+    // TestPassByReference();
+    TestPointerToInterface();
+    _result.Status();
 
     return result = _T("Execute OK!");
 }
@@ -241,7 +241,7 @@ void ProxyStubsValidator::TestPassByValue()
     TestResult("PassByValue<float>", _proxyStubsValidatorImp->passByValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByValue<bool>", _proxyStubsValidatorImp->passByValueBool(Expected::Bool));
     TestResult("PassByValue<Enum>", _proxyStubsValidatorImp->passByValueEnum(Expected::Enum, Expected::ScopedEnum, Expected::ScopedTypedEnum));
-    TestResult("PassByValue<Strucutre>", _proxyStubsValidatorImp->passByValueStructure(Expected::Structure));
+    TestResult("PassByValue<Structure>", _proxyStubsValidatorImp->passByValueStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByConstValue()
@@ -262,7 +262,7 @@ void ProxyStubsValidator::TestPassByConstValue()
     TestResult("PassByConstValue<float>", _proxyStubsValidatorImp->passByConstValueFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByConstValue<bool>", _proxyStubsValidatorImp->passByConstValueBool(Expected::Bool));
     TestResult("PassByConstValue<Enum>", _proxyStubsValidatorImp->passByConstValueEnum(Expected::Enum, Expected::ScopedEnum, Expected::ScopedTypedEnum));
-    TestResult("PassByConstValue<Strucutre>", _proxyStubsValidatorImp->passByConstValueStructure(Expected::Structure));
+    TestResult("PassByConstValue<Structure>", _proxyStubsValidatorImp->passByConstValueStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByConstReference()
@@ -282,7 +282,7 @@ void ProxyStubsValidator::TestPassByConstReference()
     TestResult("PassByConstReference<string>", _proxyStubsValidatorImp->passByConstReferenceString(Expected::String));
     TestResult("PassByConstReference<float>", _proxyStubsValidatorImp->passByConstReferenceFloat(Expected::Float, Expected::Double, Expected::LongDouble));
     TestResult("PassByConstReference<bool>", _proxyStubsValidatorImp->passByConstReferenceBool(Expected::Bool));
-    TestResult("PassByConstReference<Strucutre>", _proxyStubsValidatorImp->passByConstReferenceStructure(Expected::Structure));
+    TestResult("PassByConstReference<Structure>", _proxyStubsValidatorImp->passByConstReferenceStructure(Expected::Structure));
 }
 
 void ProxyStubsValidator::TestPassByReference()
@@ -424,30 +424,48 @@ void ProxyStubsValidator::TestPassByReference()
     }
 }
 
-template<typename T>
-void ProxyStubsValidator::TestResult(const string& name, T returned, T expected){
-    if(returned == expected)
+void ProxyStubsValidator::TestPointerToInterface()
+{
+    ASSERT(_proxyStubsValidatorImp != nullptr)
+
+    TestResult<Exchange::IProxyStubsValidator::IInterface *>("returnByPointer<IInterface *>", _proxyStubsValidatorImp->returnByPointer(), Expected::Interface);
+    TestResult<Exchange::IProxyStubsValidator::IInterface * const>("returnByPointer<IInterface * const>", _proxyStubsValidatorImp->returnByPointerConst(), Expected::Interface);
+    TestResult<const Exchange::IProxyStubsValidator::IInterface *>("returnByConstPointer<const IInterface *>", _proxyStubsValidatorImp->returnByConstPointer(), Expected::Interface);
+    TestResult<const Exchange::IProxyStubsValidator::IInterface * const>("returnByConstPointerConst<const IInterface * const>", _proxyStubsValidatorImp->returnByConstPointerConst(), Expected::Interface);
+
+    TestResult("passByPointer<IInterface *>", _proxyStubsValidatorImp->passByPointer(Expected::Interface));
+    TestResult("passByPointerConst<IInterface * const>", _proxyStubsValidatorImp->passByPointerConst(Expected::Interface));
+    TestResult("passByConstPointer<const IInterface *>", _proxyStubsValidatorImp->passByConstPointer(Expected::Interface));
+    TestResult("passByConstPointerConst<const IInterface * const>", _proxyStubsValidatorImp->passByConstPointerConst(Expected::Interface));
+}
+
+template <typename T>
+void ProxyStubsValidator::TestResult(const string& name, T returned, T expected)
+{
+    if (returned == expected)
     {
-        _passCount++;
         TRACE(Trace::Information, (_T("%s: PASS"), name.c_str()));
-    } else {
-        _failCount++;
-        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        _result.Pass();
     }
-    _totalCount++;
+    else
+    {
+        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        _result.Fail();
+    }
 }
 
 void ProxyStubsValidator::TestResult(const string& name, bool result)
 {
-    if(result)
+    if (result)
     {
-        _passCount++;
         TRACE(Trace::Information, (_T("%s: PASS"), name.c_str()));
-    } else {
-        _failCount++;
-        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        _result.Pass();
     }
-    _totalCount++;
+    else
+    {
+        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        _result.Fail();
+    }
 }
 
 bool ProxyStubsValidator::CompareStructure(const Exchange::IProxyStubsValidator::Structure& lhs, const Exchange::IProxyStubsValidator::Structure& rhs) const

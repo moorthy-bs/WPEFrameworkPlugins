@@ -41,6 +41,47 @@ private:
         ProxyStubsValidator& _parent;
     };
 
+    class Result {
+        // ToDo: maybe lock with mutex
+    private:
+        Result(const Result&) = default;
+        Result& operator=(const Result&) = default;
+
+    public:
+        Result()
+            : _passCount(0)
+            , _failCount(0)
+            , _totalCount(0)
+        {
+        }
+
+    public:
+        inline uint8_t Pass()
+        {
+            _passCount++;
+            _totalCount++;
+        }
+
+        inline uint8_t Fail()
+        {
+            _failCount++;
+            _totalCount++;
+        }
+
+        inline uint8_t PassCount() const { return _passCount; }
+        inline uint8_t FailCount() const { return _failCount; }
+        inline uint8_t TotalCount() const { return _totalCount; }
+        inline void Status() const
+        {
+            TRACE(Trace::Information, (_T("Status: Pass=%d/%d, Fail=%d/%d"), _passCount, _totalCount, _failCount, _totalCount));
+        }
+
+    private:
+        uint32_t _passCount;
+        uint32_t _failCount;
+        uint32_t _totalCount;
+    };
+
 public:
     ProxyStubsValidator()
         : _service(nullptr)
@@ -48,9 +89,7 @@ public:
         , _proxyStubsValidatorImp(nullptr)
         , _skipURL(0)
         , _pid(0)
-        , _passCount(0)
-        , _failCount(0)
-        , _totalCount(0)
+        , _result()
     {
     }
 
@@ -85,13 +124,13 @@ public:
     string Execute(void);
 
 private:
-
     void TestReturnByValue();
     void TestReturnByConstValue();
     void TestPassByValue();
     void TestPassByConstValue();
     void TestPassByConstReference();
     void TestPassByReference();
+    void TestPointerToInterface();
 
     template<typename T> void TestResult(const string& msg, T returned, T expected);
     void TestResult(const string& msg, bool result);
@@ -105,10 +144,8 @@ private:
     Exchange::IProxyStubsValidator* _proxyStubsValidatorImp;
     uint8_t _skipURL;
     uint32_t _pid;
+    Result _result;
 
-    uint32_t _passCount;
-    uint32_t _failCount;
-    uint32_t _totalCount;
 };
 
 } // namespace Plugin
