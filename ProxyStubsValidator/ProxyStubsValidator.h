@@ -3,6 +3,7 @@
 #include "Module.h"
 
 #include <interfaces/IProxyStubsValidator.h>
+#include "TestOutput.h"
 
 namespace WPEFramework {
 namespace Plugin {
@@ -73,7 +74,7 @@ private:
         inline uint8_t TotalCount() const { return _totalCount; }
         inline void Status() const
         {
-            TRACE(Trace::Information, (_T("Status: Pass=%d/%d, Fail=%d/%d"), _passCount, _totalCount, _failCount, _totalCount));
+            TRACE(TestOutput, (_T("Status: Pass=%d/%d, Fail=%d/%d"), _passCount, _totalCount, _failCount, _totalCount));
         }
 
     private:

@@ -43,7 +43,7 @@ SERVICE_REGISTRATION(ProxyStubsValidator, 1, 0);
     ASSERT(_proxyStubsValidatorImp != nullptr);
     ASSERT(_pid);
 
-    TRACE(Trace::Information, (_T("*** OutOfProcess Plugin is properly destructed. PID: %d ***"), _pid))
+    TRACE(Trace::Fatal, (_T("*** OutOfProcess Plugin is properly destructed. PID: %d ***"), _pid))
 
     ProcessTermination(_pid);
     _proxyStubsValidatorImp = nullptr;
@@ -444,12 +444,12 @@ void ProxyStubsValidator::TestResult(const string& name, T returned, T expected)
 {
     if (returned == expected)
     {
-        TRACE(Trace::Information, (_T("%s: PASS"), name.c_str()));
+        TRACE(TestOutput, (_T("%s: PASS"), name.c_str()));
         _result.Pass();
     }
     else
     {
-        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        TRACE(TestOutput, (_T("%s: FAIL"), name.c_str()));
         _result.Fail();
     }
 }
@@ -458,12 +458,12 @@ void ProxyStubsValidator::TestResult(const string& name, bool result)
 {
     if (result)
     {
-        TRACE(Trace::Information, (_T("%s: PASS"), name.c_str()));
+        TRACE(TestOutput, (_T("%s: PASS"), name.c_str()));
         _result.Pass();
     }
     else
     {
-        TRACE(Trace::Information, (_T("%s: FAIL"), name.c_str()));
+        TRACE(TestOutput, (_T("%s: FAIL"), name.c_str()));
         _result.Fail();
     }
 }
