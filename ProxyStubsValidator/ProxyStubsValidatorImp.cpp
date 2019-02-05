@@ -957,8 +957,6 @@ public:
         ASSERT(Expected::Interface != nullptr);
         IInterface* interface = Expected::Interface;
 
-        printf("*********** W srodku interface: %p\n", interface);
-        printf("*********** W srodku: %p\n", Expected::Interface);
         return interface;
     }
 
@@ -984,7 +982,9 @@ public:
     }
 
     virtual bool passByPointer(IInterface* interface) override {
+        ASSERT(Expected::Interface != nullptr);
         bool status = true;
+
 
         if(interface == nullptr) status = false;
         if(interface != Expected::Interface) status = false;
@@ -996,6 +996,7 @@ public:
     }
 
     virtual bool passByConstPointer(const IInterface* interface) override {
+        ASSERT(Expected::Interface != nullptr);
         bool status = true;
 
         if(interface == nullptr) status = false;
@@ -1005,6 +1006,7 @@ public:
     }
 
     virtual bool passByConstPointerConst(const IInterface* const interface) override {
+        ASSERT(Expected::Interface != nullptr);
         bool status = true;
 
         if(interface == nullptr) status = false;
@@ -1014,6 +1016,7 @@ public:
     }
 
     virtual bool passByPointerConst(IInterface* const interface) override {
+        ASSERT(Expected::Interface != nullptr);
         bool status = true;
 
         if(interface == nullptr) status = false;
