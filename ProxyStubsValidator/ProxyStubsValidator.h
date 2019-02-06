@@ -84,6 +84,32 @@ private:
     };
 
 public:
+    class TestResults : public Core::JSON::Container {
+    private:
+        TestResults(const TestResults&) = delete;
+        TestResults& operator=(const TestResults&) = delete;
+
+    public:
+        TestResults()
+            : Core::JSON::Container()
+            , TotalCount()
+            , FailCount()
+            , PassCount()
+        {
+            Add(_T("passCount"), &PassCount);
+            Add(_T("failCount"), &FailCount);
+            Add(_T("totalCount"), &TotalCount);
+        }
+
+        ~TestResults() = default;
+
+    public:
+        Core::JSON::DecUInt32 PassCount;
+        Core::JSON::DecUInt32 FailCount;
+        Core::JSON::DecUInt32 TotalCount;
+    };
+
+public:
     ProxyStubsValidator()
         : _service(nullptr)
         , _notification(this)
@@ -122,7 +148,7 @@ private:
     void ProcessTermination(uint32_t pid);
 
 public:
-    string Execute(void);
+    void Execute(void);
 
 private:
     void TestReturnByValue();

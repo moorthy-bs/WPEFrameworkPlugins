@@ -7,6 +7,8 @@ namespace Plugin {
 
 SERVICE_REGISTRATION(ProxyStubsValidator, 1, 0);
 
+static Core::ProxyPoolType<Web::JSONBodyType<ProxyStubsValidator::TestResults> > jsonResponseFactoryTestResults(1);
+
 /* virtual */ const string ProxyStubsValidator::Initialize(PluginHost::IShell* service)
 {
     /*Assume that everything is OK*/
@@ -79,8 +81,17 @@ SERVICE_REGISTRATION(ProxyStubsValidator, 1, 0);
 
         if (index.Current().Text() == _T("Execute") && (!index.Next()))
         {
+            Execute();
             result->ErrorCode = Web::STATUS_OK;
-            result->Message = Execute();
+            result->ContentType = Web::MIMETypes::MIME_JSON;
+            result->Message = _T("OK");
+            auto response(jsonResponseFactoryTestResults.Element());
+
+            response->PassCount = _result.PassCount();
+            response->FailCount = _result.FailCount();
+            response->TotalCount = _result.TotalCount();
+
+            result->Body(response);
         }
     }
 
@@ -112,11 +123,8 @@ void ProxyStubsValidator::Deactivated(RPC::IRemoteProcess* process)
     }
 }
 
-string ProxyStubsValidator::Execute(void)
+void ProxyStubsValidator::Execute(void)
 {
-    // ToDo: should be moved to other thread?
-    string result = _T("");
-
     TestReturnByValue();
     TestReturnByConstValue();
     TestPassByValue();
@@ -125,8 +133,6 @@ string ProxyStubsValidator::Execute(void)
     // TestPassByReference();
     TestPointerToInterface();
     _result.Status();
-
-    return result = _T("Execute OK!");
 }
 
 void ProxyStubsValidator::TestReturnByValue()
