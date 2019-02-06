@@ -584,7 +584,7 @@ static GSourceFuncs _handlerIntervention =
             TRACE_L1("Registered a sink on the browser %p", sink);
         }
 
-        virtual void Unregister(Exchange::IBrowser::INotification* sink)
+        virtual void Unregister(const Exchange::IBrowser::INotification* sink)
         {
             _adminLock.Lock();
 
