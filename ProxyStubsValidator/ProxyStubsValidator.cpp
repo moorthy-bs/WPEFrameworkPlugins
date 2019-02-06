@@ -55,7 +55,6 @@ static Core::ProxyPoolType<Web::JSONBodyType<ProxyStubsValidator::TestResults> >
 
 /* virtual */ string ProxyStubsValidator::Information() const
 {
-    // No additional info to report.
     return ((_T("The purpose of this plugin is provide ability to validate proxy/stubs generation mechanism.")));
 }
 
@@ -130,7 +129,7 @@ void ProxyStubsValidator::Execute(void)
     TestPassByValue();
     TestPassByConstValue();
     TestPassByConstReference();
-    // TestPassByReference();
+    TestPassByReference();
     TestPointerToInterface();
     _result.Status();
 }
