@@ -36,6 +36,7 @@ option(PLUGIN_WIFICONTROL "Include WifiControl plugin" OFF)
 option(PLUGIN_TESTCONTROLLER "Include TestController plugin" OFF)
 option(PLUGIN_JSONRPC "Include JSONRPCExamplePlugin plugin" ON)
 option(PLUGIN_SPARK "Include SparkEngine plugin" OFF)
+option(PLUGIN_MESSENGER "Include Messenger plugin" OFF)
 
 # Library installation section
 string(TOLOWER ${NAMESPACE} STORAGE_DIRECTORY)
@@ -183,4 +184,7 @@ endif()
 
 if(PLUGIN_SPARK)
     add_subdirectory(Spark)
+
+if(PLUGIN_MESSENGER)
+    add_subdirectory(Messenger)
 endif()
