@@ -36,7 +36,7 @@ namespace Plugin {
             std::string Name;
             CDMi::ISystemFactory* Factory;
         };
- 
+
         class ExternalAccess : public RPC::Communicator
         {
         private:
@@ -391,6 +391,9 @@ namespace Plugin {
                     return (_buffer->Name());
                 }
 
+                DataExchange* getBuffer(){
+                    return  _buffer;
+                }
                 // Loads the data stored for the specified session into the cdm object
                 virtual ::OCDM::OCDM_RESULT Load() override {
                     TRACE(Trace::Information, ("Load()"));
@@ -585,7 +588,10 @@ namespace Plugin {
                             if (_administrator.AquireBuffer(bufferId) == true) {
 
                                 SessionImplementation* newEntry = Core::Service<SessionImplementation>::Create<SessionImplementation>(this, keySystem, sessionInterface, callback, bufferId, _defaultSize, &keyIds);
+                                SessionListener* listener = _parent.getListener() ;
 
+                                ::OCDM::DataExchange* buffer = reinterpret_cast<::OCDM::DataExchange*>(newEntry->getBuffer());
+                                listener->ServerSessionInfo(this,reinterpret_cast<::OCDM::ISession*>(newEntry),sessionInterface,keySystem,buffer);
                                 session = newEntry;
                                 sessionId = newEntry->SessionId();
 
@@ -726,7 +732,7 @@ namespace Plugin {
                         system->DestroyMediaKeySession(mediaKeySession);
                     }
                 }
- 
+
                 if (session != nullptr) {
 
                     _administrator.ReleaseBuffer(session->BufferId());
@@ -748,7 +754,19 @@ namespace Plugin {
                 _adminLock.Unlock();
 
             }
+       public:
+             void DeleteSession( ::OCDM::ISession* ocdmSession, CDMi::IMediaKeySession* mediaKeySession,std::string keySystem,::OCDM::DataExchange* buffer) {
  
+                _adminLock.Lock();
+
+                SessionImplementation* session = reinterpret_cast<SessionImplementation*>(ocdmSession);
+                Remove(session,keySystem,mediaKeySession);
+                delete buffer;
+
+                TRACE(Trace::Information, ("Destructed the Session and buffer @ Server side: %p",session));
+
+                _adminLock.Unlock();
+            }
         private:
             OCDMImplementation& _parent;
             mutable Core::CriticalSection _adminLock;
@@ -757,8 +775,61 @@ namespace Plugin {
             std::list<SessionImplementation*> _sessionList;
             std::list<::OCDM::IAccessorOCDM::INotification*> _observers;
         };
+        class SessionListener : public WPEFramework::RPC::Communicator::RemoteProcess::INotification
+        {
+        public:
+            SessionListener(const SessionListener&) = delete;
 
+        public:
+            explicit SessionListener()
+            {
+            }
 
+            virtual ~SessionListener()
+            {
+            }
+
+        private:
+            virtual uint32_t Release() const
+            {
+                return 1;
+            }
+
+            virtual void *QueryInterface(const uint32_t interfaceNumber VARIABLE_IS_NOT_USED)
+            {
+                return this;
+            }
+
+            virtual void Activated(WPEFramework::RPC::IRemoteProcess* process)
+            {
+            }
+
+            virtual void Deactivated(WPEFramework::RPC::IRemoteProcess *process VARIABLE_IS_NOT_USED)
+            {
+                _ocdm->DeleteSession(_session,_mediaKeySession,_keySystem,_buffer);
+            }
+
+        public:
+            virtual void AddRef() const
+            {
+            }
+
+            void ServerSessionInfo(AccessorOCDM* ocdm,::OCDM::ISession* session,CDMi::IMediaKeySession* mediaKeySession,std::string keySystem,::OCDM::DataExchange* buffer)
+            {
+                 _ocdm = ocdm;
+                 _session = session;
+                 _mediaKeySession = mediaKeySession;
+                 _keySystem = keySystem;
+                 _buffer = buffer;
+            }
+
+         private:
+            AccessorOCDM* _ocdm;
+            ::OCDM::ISession* _session;
+            CDMi::IMediaKeySession* _mediaKeySession;
+            std::string _keySystem;
+            ::OCDM::DataExchange* _buffer;
+        };
 
         class Config : public Core::JSON::Container {
         private:
@@ -938,9 +1009,10 @@ namespace Plugin {
 
             _entryPoint = Core::Service<AccessorOCDM>::Create<::OCDM::IAccessorOCDM>(this, config.SharePath.Value(), config.ShareSize.Value());
             _service = new ExternalAccess(Core::NodeId(config.Connector.Value().c_str()), _entryPoint);
+            _sessionListener = Core::Service<SessionListener>::Create<SessionListener>();
+            _service->Register(_sessionListener);
 
-            if (_service != nullptr) {
-
+           if (_service != nullptr) {
                 if (_service->IsListening() == false) {
                     delete _service;
                     _entryPoint->Release();
@@ -1031,7 +1103,10 @@ namespace Plugin {
             TRACE(Trace::Information, ("KeySystem(%s) => %p", keySystem.c_str(), result));
             return (result);
         }
-
+        SessionListener* getListener()
+        {
+            return _sessionListener;
+        }
     private:
         void LoadDesignators(const string& keySystem, std::list<string>& designators) const {
             std::map<const std::string, SystemFactory>::const_iterator index (_systemToFactory.begin());
@@ -1067,6 +1142,7 @@ namespace Plugin {
         std::map<const std::string,SystemFactory> _systemToFactory;
         std::list<Core::Library> _systemLibraries;
         std::list<string> _keySystems;
+        SessionListener* _sessionListener;
 #ifdef _MSVC_LANG
         void* _proxystubs;
 #endif
