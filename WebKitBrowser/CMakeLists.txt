@@ -4,6 +4,7 @@ set(MODULE_NAME ${NAMESPACE}${PLUGIN_NAME})
 option(PLUGIN_WEBKITBROWSER_YOUTUBE "Include YouTube in seperate plugin." OFF)
 option(PLUGIN_WEBKITBROWSER_APPS "Include Apps instance in seperate plugin." OFF)
 option(PLUGIN_WEBKITBROWSER_UX "Include UX in seperate plugin." OFF)
+option(PLUGIN_WEBKITBROWSER_LIGHTNING "Include Lightning in seperate plugin." OFF)
 
 set(PLUGIN_WEBKITBROWSER_AUTOSTART false CACHE STRING "Automatically start WebKitBrowser plugin")
 set(PLUGIN_WEBKITBROWSER_TRANSPARENT false CACHE STRING "Set transparency")
@@ -79,3 +80,9 @@ endif()
 if(PLUGIN_WEBKITBROWSER_UX)
     write_config( UX )
 endif()
+
+# Lightning configuration
+if(PLUGIN_WEBKITBROWSER_LIGHTNING)
+    write_config( Lightning )
+endif()
+
