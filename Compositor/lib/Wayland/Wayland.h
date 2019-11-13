@@ -11,6 +11,7 @@
 #include <interfaces/IComposition.h>
 
 #include <virtualinput/VirtualKeyboard.h>
+#include <virtualinput/VirtualMouse.h>
 
 #ifdef ENABLE_NXSERVER
 #include "NexusServer/NexusServer.h"
